@@ -67,7 +67,7 @@ function complexDice:calcDicesResult(dices,diceSides,diceResultModificator)
 	local result = {}
 	local sum = 0
 	for i = 1, dices do
-		local rnd = math.random(1,diceSides)+diceResultModificator
+		local rnd = self.const.random:random(1,diceSides)+diceResultModificator
 		result[i] = rnd
 		sum = sum + rnd
 	end
@@ -216,7 +216,15 @@ function complexDice.onTextMessageEvent(serverConnectionHandlerID, targetMode, t
 	local myUID = self:getMyUID(serverConnectionHandlerID)
 	if fromUniqueIdentifier == myUID and self.const.OPEN_OWN_PRIVATE_CHAT == message then
 		ts3.requestSendPrivateTextMsg(serverConnectionHandlerID,"My own chat.",fromID)
-	elseif (fromUniqueIdentifier == myUID or self.const.ROLL_FOR_OTHERS) and ts3defs.TextMessageTargetMode.TextMessageTarget_SERVER ~= targetMode then
+	elseif fromUniqueIdentifier == myUID and self.const.TOGGLE_ROLL_FOR_OTHERS == message then
+		if 0 ~= self.config.ROLL_FOR_OTHERS then
+			self.config.ROLL_FOR_OTHERS = 0
+			self:printMsg("Only you can roll now.")
+		else
+			self.config.ROLL_FOR_OTHERS = 1
+			self:printMsg("All can roll now.")
+		end
+	elseif (fromUniqueIdentifier == myUID or 0 ~= self.config.ROLL_FOR_OTHERS) and ts3defs.TextMessageTargetMode.TextMessageTarget_SERVER ~= targetMode then
 		local rollCommand = 0
 		local diceString = ""
 		if stringStartsWith(message,self.const.ROLL_COMMAND) then
@@ -244,3 +252,5 @@ function complexDice.onTextMessageEvent(serverConnectionHandlerID, targetMode, t
 
 	return ret
 end
+
+-- Direct functions

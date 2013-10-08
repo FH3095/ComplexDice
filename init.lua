@@ -30,11 +30,14 @@ local complexDice = {
 		DEBUG_MSG_IN_CHAT = 1,
 		ROLL_COMMAND = "!roll ", -- Space is important (otherwise !roll(d2) or !rolld2 would be valid)
 		PRIVATE_ROLL_COMMAND = "!proll ",
-		OPEN_OWN_PRIVATE_CHAT = "!priv",
-		ROLL_FOR_OTHERS = 0, -- Not yet implemented
+		OPEN_OWN_PRIVATE_CHAT = "!self",
+		TOGGLE_ROLL_FOR_OTHERS = "!rollforothers",
 		TS_MAX_CHAT_MESSAGE_LENGTH = 1023,
 	},
 	var = {},
+	config = {
+		ROLL_FOR_OTHERS = 0,
+	},
 }
 
 complexDice.const = protectTable(complexDice.const)
@@ -43,12 +46,14 @@ function FH3095_getComplexDice()
 	return complexDice
 end
 
+require(complexDice.const.MODULE_FOLDER .. "/randomlua")
+complexDice.const.random = twister(os.time())
+
 require(complexDice.const.MODULE_FOLDER .. "/ComplexDice")
 
 
 local registeredEvents = {
 	onTextMessageEvent = complexDice.onTextMessageEvent
 }
-math.randomseed(os.time())
 
 ts3RegisterModule(complexDice.const.MODULE_NAME, registeredEvents)
