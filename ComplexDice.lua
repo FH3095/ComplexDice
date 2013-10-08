@@ -239,6 +239,10 @@ function complexDice.onTextMessageEvent(serverConnectionHandlerID, targetMode, t
 			local responseID = 0 -- Not needed for response to channel
 			if ts3defs.TextMessageTargetMode.TextMessageTarget_CLIENT == targetMode then
 				responseID = fromID
+				local myClientID = self:getMyClientID(serverConnectionHandlerID)
+				if responseID == myClientID then
+					responseID = toID
+				end
 			end
 			if 2 == rollCommand then -- Private Roll.
 				responseMode = ts3defs.TextMessageTargetMode.TextMessageTarget_CLIENT
