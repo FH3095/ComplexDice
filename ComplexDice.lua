@@ -42,7 +42,7 @@ end
 function complexDice:getMyUID(serverConnectionHandlerID)
 	local myUID, error = ts3.getClientVariableAsString(serverConnectionHandlerID, self:getMyClientID(serverConnectionHandlerID), ts3defs.ClientProperties.CLIENT_UNIQUE_IDENTIFIER)
 	self:checkError("Getting own UID: ",error)
-	
+
 	return myUID
 end
 
@@ -122,7 +122,7 @@ function complexDice:rollDices(diceString)
 	diceString = diceString:gsub(" ","") -- Remove whitespaces
 
 	self:debugMsg("rollDices: Prepared dice string: " .. diceString)
-	
+
 	diceString = diceString:gsub("(%(" .. "%d*d%d+[%+%-%d]*" .. "%))", self.calcDices)
 
 	self.var.diceResult.formattedRequest = diceString
@@ -177,8 +177,13 @@ function complexDice:printDices(serverConnectionHandlerID,fromName,responseMode,
 	local diceMessage = ""
 	for _,result in ipairs(self.var.diceResult) do
 		diceMessage = diceMessage .. "[b]" .. result.dice .. "[/b] = { "
+		local firstDice = 1
 		for _,diceResult in ipairs(result.dices) do
-			diceMessage = diceMessage .. diceResult .. ", "
+			if 0 == firstDice then
+				diceMessage = diceMessage .. ", "
+			end
+			firstDice = 0
+			diceMessage = diceMessage .. diceResult
 		end
 		diceMessage = diceMessage .. " }\n"
 
