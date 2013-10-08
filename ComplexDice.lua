@@ -252,5 +252,3 @@ function complexDice.onTextMessageEvent(serverConnectionHandlerID, targetMode, t
 
 	return ret
 end
-
--- Direct functions
