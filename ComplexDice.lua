@@ -185,7 +185,7 @@ function complexDice:printDices(serverConnectionHandlerID,fromName,responseMode,
 			firstDice = 0
 			diceMessage = diceMessage .. diceResult
 		end
-		diceMessage = diceMessage .. " }\n"
+		diceMessage = diceMessage .. " } = " .. result.sum .. "\n"
 
 		if string.len(message .. diceMessage) > self.const.TS_MAX_CHAT_MESSAGE_LENGTH then
 			self:sendTextMessage(serverConnectionHandlerID,responseMode,responseID,message)
