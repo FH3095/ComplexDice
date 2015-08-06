@@ -9,7 +9,7 @@ require("ts3errors")
 local function protectTable(tbl)
 	local function metaTableConstProtect(_,key,value)
 		if nil ~= tbl[key] then
-			print(tostring(key) .. " is a read-only variable! (Tried to change to \`" .. tostring(value) .. "\'.)")
+			print(tostring(key) .. " is a read-only variable! (Tried to change to \'" .. tostring(value) .. "\'.)")
 			return
 		end
 		rawset(tbl,key,value)
